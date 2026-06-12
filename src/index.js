@@ -20,6 +20,18 @@ app.use(
 
 app.use('/hook', webhookRouter)
 
+app.get('/', (_req, res) => res.json({
+  service: 'hookr',
+  description: 'Real-time webhook relay with WebSocket fan-out',
+  endpoints: [
+    { method: 'POST', path: '/hook/:channel', description: 'Deliver a webhook event to a channel' },
+    { method: 'GET',  path: '/hook/channels', description: 'List all active channels' },
+    { method: 'GET',  path: '/hook/:channel/replay', description: 'Replay buffered events for a channel' },
+    { method: 'GET',  path: '/health', description: 'Health check' },
+    { method: 'WS',   path: '/', description: 'WebSocket - subscribe({ channel }) to receive live events' },
+  ],
+}))
+
 app.get('/health', (_req, res) => res.json({ status: 'ok' }))
 
 // WebSocket — clients subscribe to one or more channels
